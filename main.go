@@ -1,5 +1,9 @@
 package main
 
+import config "pokedex-cli/internal"
+
 func main() {
-	startRepl()
+	c := new(config.Preview)
+
+	startRepl(c)
 }

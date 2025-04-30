@@ -4,10 +4,11 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	config "pokedex-cli/internal"
 	"strings"
 )
 
-func startRepl() {
+func startRepl(c *config.Preview) {
 	// REPL LOOP
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
@@ -24,7 +25,7 @@ func startRepl() {
 		command, exists := getCommands()[commandName]
 
 		if exists {
-			err := command.callback()
+			err := command.callback(c)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -46,7 +47,7 @@ func cleanInput(text string) []string {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func() error
+	callback    func(c *config.Preview) error
 }
 
 // COMMAND REGISTRY

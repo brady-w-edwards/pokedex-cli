@@ -1,6 +1,6 @@
-package internal
+package config
 
-type Config struct {
+type Preview struct {
 	Next     *string
 	Previous *string
 }
