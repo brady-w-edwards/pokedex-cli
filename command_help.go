@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	config "pokedex-cli/internal"
+	"pokedex-cli/internal/config"
 )
 
 func commandHelp(c *config.Preview) error {

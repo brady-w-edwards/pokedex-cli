@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	config "pokedex-cli/internal"
+	"pokedex-cli/internal/config"
 	"strings"
 )
 
@@ -65,8 +65,13 @@ func getCommands() map[string]cliCommand {
 		},
 		"map": {
 			name:        "map",
-			description: "Displays 20 map locations in the world",
+			description: "Displays the next 20 map locations in the world",
 			callback:    commandMap,
+		},
+		"mapb": {
+			name:        "mapb",
+			description: "Displays the previous 20 map locations in the world",
+			callback:    commandMapb,
 		},
 	}
 }

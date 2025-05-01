@@ -8,11 +8,14 @@ import (
 	"pokedex-cli/internal/config"
 )
 
-func commandMap(c *config.Preview) error {
+func commandMapb(c *config.Preview) error {
 	url := "https://pokeapi.co/api/v2/location-area"
 
-	if c.Next != nil {
-		url = *c.Next
+	if c.Previous != nil {
+		url = *c.Previous
+	} else {
+		fmt.Printf("You're on the first page\n")
+		return nil
 	}
 
 	res, err := http.Get(url)

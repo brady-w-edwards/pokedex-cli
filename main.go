@@ -1,6 +1,6 @@
 package main
 
-import config "pokedex-cli/internal"
+import "pokedex-cli/internal/config"
 
 func main() {
 	c := new(config.Preview)

@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
-	config "pokedex-cli/internal"
+	"pokedex-cli/internal/config"
 )
 
 func commandExit(c *config.Preview) error {
