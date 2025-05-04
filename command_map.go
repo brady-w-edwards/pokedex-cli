@@ -1,51 +1,41 @@
 package main
 
 import (
-	"encoding/json"
+	"errors"
 	"fmt"
-	"io"
-	"net/http"
-	"pokedex-cli/internal/config"
-	"pokedex-cli/internal/pokecache"
 )
 
-func commandMap(c *config.Preview, cache *pokecache.Cache) error {
-	url := "https://pokeapi.co/api/v2/location-area"
+func commandMapf(cfg *config) error {
+	res, err := cfg.pokeapiClient.ListLocations(cfg.Next)
 
-	if c.Next != nil {
-		url = *c.Next
-	}
-	body, found := cache.Get(url)
-
-	if !found {
-		res, err := http.Get(url)
-		if err != nil {
-			return fmt.Errorf("request failed: %s", err)
-		}
-
-		body, err := io.ReadAll(res.Body)
-		defer res.Body.Close()
-
-		if res.StatusCode > 299 {
-			return fmt.Errorf("response failed with status code: %d", res.StatusCode)
-		}
-		if err != nil {
-			return fmt.Errorf("failed to read body: %s", err)
-		}
-
-		var locations config.LocationsArea
-		err = json.Unmarshal(body, &locations)
-		if err != nil {
-			return fmt.Errorf("error unmarshalling data: %s", err)
-		}
+	if err != nil {
+		return err
 	}
 
-	c.Next = locations.Next
-	c.Previous = locations.Previous
+	cfg.Next = res.Next
+	cfg.Previous = res.Previous
 
-	for _, loc := range locations.Results {
+	for _, loc := range res.Results {
 		fmt.Println(loc.Name)
 	}
+	return nil
+}
 
+func commandMapb(cfg *config) error {
+	if cfg.Previous == nil {
+		return errors.New("you're on the first page")
+	}
+	res, err := cfg.pokeapiClient.ListLocations(cfg.Previous)
+
+	if err != nil {
+		return err
+	}
+
+	cfg.Next = res.Next
+	cfg.Previous = res.Previous
+
+	for _, loc := range res.Results {
+		fmt.Println(loc.Name)
+	}
 	return nil
 }

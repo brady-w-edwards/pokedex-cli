@@ -4,11 +4,17 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"pokedex-cli/internal/config"
+	"pokedex-cli/internal/pokeapi"
 	"strings"
 )
 
-func startRepl(c *config.Preview) {
+type config struct {
+	pokeapiClient pokeapi.Client
+	Next          *string
+	Previous      *string
+}
+
+func startRepl(cfg *config) {
 	// REPL LOOP
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
@@ -25,7 +31,7 @@ func startRepl(c *config.Preview) {
 		command, exists := getCommands()[commandName]
 
 		if exists {
-			err := command.callback(c)
+			err := command.callback(cfg)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -47,7 +53,7 @@ func cleanInput(text string) []string {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(c *config.Preview) error
+	callback    func(*config) error
 }
 
 // COMMAND REGISTRY
@@ -63,10 +69,10 @@ func getCommands() map[string]cliCommand {
 			description: "Displays a help message",
 			callback:    commandHelp,
 		},
-		"map": {
-			name:        "map",
+		"mapf": {
+			name:        "mapf",
 			description: "Displays the next 20 map locations in the world",
-			callback:    commandMap,
+			callback:    commandMapf,
 		},
 		"mapb": {
 			name:        "mapb",

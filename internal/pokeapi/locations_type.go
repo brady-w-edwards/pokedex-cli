@@ -1,9 +1,4 @@
-package config
-
-type Preview struct {
-	Next     *string
-	Previous *string
-}
+package pokeapi
 
 type LocationsArea struct {
 	Count    int     `json:"count"`

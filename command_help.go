@@ -2,10 +2,9 @@ package main
 
 import (
 	"fmt"
-	"pokedex-cli/internal/config"
 )
 
-func commandHelp(c *config.Preview) error {
+func commandHelp(c *config) error {
 	fmt.Println()
 	fmt.Println("Welcome to the Pokedex!")
 	fmt.Println("Usage:")
